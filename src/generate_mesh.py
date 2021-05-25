@@ -32,9 +32,9 @@ dpH = 0.045
 pHvec = np.arange(pHstart, pHend, dpH)
 
 #set up potential range(consider doing this in input)
-Vstart = -2
-Vend = 4
-dV = 0.015
+Vstart = 4
+Vend = -2
+dV = -0.015
 Vvec = np.arange(Vstart, Vend, dV)
 
 #set up grid
@@ -60,14 +60,56 @@ def generate(conc = 1.5e-8, carbonates = False):
             lowpot = uPb
             stable = "Pb"
             
-                    #Pb2+
+            #Pb2+
             pot = GPb2 + R*T*math.log(conc)
             urxn = pot + 2*ue - uPb
             #print("Pb2+: ", urxn)
             #pb2plus[j] == urxn
             if (urxn <= lowpot) :
                 lowpot = urxn
-                stable = "Pb2+"
+                stable = "Pb++"
+                
+            #PbO
+            urxn = GPbO + 2*ue + 2*uH - uPb - uH2O
+            #print("PbO: ", urxn)
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "PbO"
+                
+            #PbO2
+            urxn = GPbO2 + 4*ue + 4*uH - uPb - 2*uH2O
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "PbO2"
+                
+            #Pb3O4
+            urxn = (GPb3O4 + 8*ue + 8*uH - 3*uPb -4*uH2O)/3
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "Pb3O4"
+                
+            #Pb4+
+            pot = GPb4 + R*T*math.log(conc)
+            urxn = pot + 4*ue - uPb
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "Pb++++"
+                
+            #HPbO2
+            pot = GHPbO2 + R*T*math.log(conc)
+            urxn = pot + 3*uH + 2*ue - 2*uH2O - uPb
+            #print("HPbO2: ", urxn)
+            if (urxn <= lowpot) : 
+                lowpot = urxn
+                stable = "HPbO2"
+                
+            #PbO3--
+            pot = GPbO3 + R*T*math.log(conc)
+            urxn = pot + 6*uH + 4*ue - 3*uH2O - uPb
+            #print("PbO3: ", urxn)
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "PbO3--"
                 
             Z[i,j] = stable
             i+=1
