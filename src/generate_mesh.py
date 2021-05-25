@@ -101,7 +101,7 @@ def generate(conc = 1.5e-8, carbonates = False):
             #print("HPbO2: ", urxn)
             if (urxn <= lowpot) : 
                 lowpot = urxn
-                stable = "HPbO2"
+                stable = "HPbO2-"
                 
             #PbO3--
             pot = GPbO3 + R*T*math.log(conc)
@@ -114,4 +114,4 @@ def generate(conc = 1.5e-8, carbonates = False):
             Z[i,j] = stable
             i+=1
         j+=1
-    return Z
+    return pHvec, Vvec, Z
