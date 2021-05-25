@@ -28,13 +28,13 @@ OH = -157.33514
 #set up pH range (consider doing this in input)
 pHstart = -2
 pHend = 16
-dpH = 0.045
+dpH = 0.0045
 pHvec = np.arange(pHstart, pHend, dpH)
 
 #set up potential range(consider doing this in input)
 Vstart = 4
 Vend = -2
-dV = -0.015
+dV = -0.0015
 Vvec = np.arange(Vstart, Vend, dV)
 
 #set up grid
@@ -114,4 +114,4 @@ def generate(conc = 1.5e-8, carbonates = False):
             Z[i,j] = stable
             i+=1
         j+=1
-    return pHvec, Vvec, Z
+    return pH_, V_, Z
