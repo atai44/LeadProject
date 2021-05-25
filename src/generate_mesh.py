@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import math
 
 #constants
@@ -25,6 +25,51 @@ GPbO4 = -282.08946
 GPbH2 = 290.788
 OH = -157.33514
 
+#set up pH range (consider doing this in input)
+pHstart = -2
+pHend = 16
+dpH = 0.045
+pHvec = np.arange(pHstart, pHend, dpH)
+
+#set up potential range(consider doing this in input)
+Vstart = -2
+Vend = 4
+dV = 0.015
+Vvec = np.arange(Vstart, Vend, dV)
+
+#set up grid
+pH_, V_ = np.meshgrid(pHvec, Vvec)
+Z = np.empty(np.shape(pH_), dtype = object)
+
 def generate(conc = 1.5e-8, carbonates = False):
     print("calculating stable species")
     print("Pb concentration: ", conc)
+    i = 0
+    j = 0
+    for pH in pHvec:
+        i = 0
+        for V in Vvec:
+            lowpot = 10000000
+            stable = "check"
+            ue = -F * V
+            uH = -R*T*math.log(10)*pH
+            uPb = GPb
+            uH2O = -237.18
+            
+            #Pb
+            lowpot = uPb
+            stable = "Pb"
+            
+                    #Pb2+
+            pot = GPb2 + R*T*math.log(conc)
+            urxn = pot + 2*ue - uPb
+            #print("Pb2+: ", urxn)
+            #pb2plus[j] == urxn
+            if (urxn <= lowpot) :
+                lowpot = urxn
+                stable = "Pb2+"
+                
+            Z[i,j] = stable
+            i+=1
+        j+=1
+    return Z

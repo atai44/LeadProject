@@ -1,5 +1,5 @@
 from generate_mesh import generate
 from makeplot import makeplot
 
-generate()
+mesh = generate()
 makeplot()
